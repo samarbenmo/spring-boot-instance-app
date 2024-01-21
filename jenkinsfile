@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    stages {
+        stage ('build project') {
+            step {
+                sh './mvnw package'
+            }
+        }
+        stage('build docker image') {
+            steps {
+                sh 'docker build -t spring-boot-instance .'
+            }
+        }
+        stage('run new container')
+        {
+            steps {
+                sh 'docker run -tid -P -p 8081:8081 spring-boot-instance' 
+            }
+        }
+    }
+}
